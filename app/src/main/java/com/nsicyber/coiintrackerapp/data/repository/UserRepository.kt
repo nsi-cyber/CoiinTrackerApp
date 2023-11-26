@@ -1,6 +1,7 @@
 package com.nsicyber.coiintrackerapp.data.repository
 
 import com.google.firebase.auth.FirebaseUser
+import com.nsicyber.coiintrackerapp.model.response.CoinModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -9,8 +10,11 @@ class UserRepository @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 )
 {
+    suspend fun getUserLikes(): List<CoinModel?>? {
+        return firebaseRepository.readDataFromFirestore().map { it.toObject(CoinModel::class.java) }
+    }
 
-    fun getUser(): FirebaseUser?{
+    fun getUser():FirebaseUser?{
         return firebaseRepository.getFirebaseUser()
     }
 
@@ -21,6 +25,13 @@ class UserRepository @Inject constructor(
         firebaseRepository.signUp(email, password)
     }
 
+    suspend fun userAddData(data: CoinModel?):Boolean?{
+        return firebaseRepository.addDataToFirestore(data)
+    }
+
+    suspend fun userRemoveData(id: String?):Boolean?{
+        return  firebaseRepository.deleteDataFromFirestore(coinId=id)
+    }
 
 
 }
