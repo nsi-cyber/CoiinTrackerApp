@@ -14,6 +14,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.common.api.ApiException
+import com.nsicyber.coiintrackerapp.data.api.UnauthorizedException
+import com.nsicyber.coiintrackerapp.ui.components.login
+import com.nsicyber.coiintrackerapp.ui.components.navHostController
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -99,7 +102,7 @@ open class BaseViewModel : ViewModel() {
                 when (e) {
                     //java.util.concurrent.CancellationException: olduğu zaman response handler tarafına bak
                     is ApiException -> setErrorDialogState(true, e.message)
-                    //is UnauthorizedException -> navHostController!!.navigate(login)
+                    is UnauthorizedException -> navHostController!!.navigate(login)
                     is IOException -> setErrorDialogState(true, e.message)
                     is CancellationException -> setErrorDialogState(true, "An error acquired")
                     is HttpException -> {
