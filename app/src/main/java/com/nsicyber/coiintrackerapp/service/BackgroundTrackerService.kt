@@ -126,5 +126,4 @@ class BackgroundTrackerService : Service() {
         }, 0)
     }
 
-    // Diğer kodlar...
 }
