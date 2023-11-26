@@ -18,6 +18,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.io.File
 import java.io.IOException
 import java.util.Locale
@@ -100,7 +101,14 @@ open class BaseViewModel : ViewModel() {
                     is ApiException -> setErrorDialogState(true, e.message)
                     //is UnauthorizedException -> navHostController!!.navigate(login)
                     is IOException -> setErrorDialogState(true, e.message)
-                    is CancellationException -> setErrorDialogState(true, "Bir Hata Oluştu")
+                    is CancellationException -> setErrorDialogState(true, "An error acquired")
+                    is HttpException -> {
+                        if(e.code()==429)
+                        setErrorDialogState(true, "Too many request error")
+                        else
+                        setErrorDialogState(true, "An error acquired")
+
+                    }
                     else -> {
                         if (e !is com.google.gson.JsonSyntaxException) {
                             setErrorDialogState(true, e.message);
