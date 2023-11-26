@@ -48,7 +48,10 @@ fun HomeScreen() {
     val viewModel = hiltViewModel<HomeViewModel>()
     LaunchedEffect(Unit){
         viewModel.getCoinList()
+        viewModel.searchTextField=""
     }
+
+
     BaseView(useIsBusy = true, viewModel = viewModel,
         isShowBottomBar = true,
         canGoBack = false,

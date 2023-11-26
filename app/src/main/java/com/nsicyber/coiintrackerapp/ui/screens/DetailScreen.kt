@@ -47,6 +47,7 @@ import com.nsicyber.coiintrackerapp.ui.components.BaseView
 import com.nsicyber.coiintrackerapp.ui.components.CustomAppBar
 import com.nsicyber.coiintrackerapp.ui.components.CustomCard
 import com.nsicyber.coiintrackerapp.viewmodel.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
@@ -56,8 +57,9 @@ fun DetailScreen(id: String?) {
     val viewModel = hiltViewModel<DetailViewModel>()
     var scope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
+        viewModel.isUserFavorited(id)
         viewModel.getCoinDetail(id)
-        viewModel.isUserFavorited()
+
     }
 
     BaseView(

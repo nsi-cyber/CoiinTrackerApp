@@ -27,6 +27,7 @@ import javax.inject.Inject
 class BackgroundTrackerService : Service() {
 
     private val handler = Handler()
+    private val runnableMap = mutableMapOf<String, Runnable>()
 
     @Inject
     lateinit var trackerRepository: TrackerRepository
@@ -34,46 +35,21 @@ class BackgroundTrackerService : Service() {
     @Inject
     lateinit var firebaseRepository: FirebaseRepository
 
-    @Suppress("DEPRECATION")
-    private fun createNotificationChannel(channelId: String, channelName: String): String {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
-        }
-        return channelId
-    }
-
-    private fun createNotification(): Notification {
-        val channelId =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel("my_service", "Coiin Tracker")
-            } else {
-                ""
-            }
-
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Coiin Tracker")
-            .setContentText("Service working...")
-            .setSmallIcon(R.drawable.ic_logo) // Kendi ikonunuzu kullanın
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-
-        return notificationBuilder.build()
+    companion object {
+        private const val TAG = "BackgroundTrackerService"
+        private const val NOTIFICATION_CHANNEL_ID = "my_service"
+        private const val NOTIFICATION_CHANNEL_NAME = "Coiin Tracker"
+        private const val NOTIFICATION_ID = 1
     }
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "Tracker service created.")
 
-
         val notification = createNotification()
-        startForeground(1, notification)
+        startForeground(NOTIFICATION_ID, notification)
 
-
-
-        if (HawkUtils.getLastUser() != null)
-
-
+        if (HawkUtils.getLastUser() != null) {
             GlobalScope.launch(Dispatchers.IO) {
                 val myCoinsResult =
                     firebaseRepository.readDataFromFirestore(HawkUtils.getLastUser())
@@ -82,48 +58,91 @@ class BackgroundTrackerService : Service() {
                     model.toObject(CoinModel::class.java)?.reloadPerHour?.let { value ->
                         startBackgroundTask(model.toObject(CoinModel::class.java))
                     }
-
                 }
-
-
             }
-
+        }
     }
 
-    override fun onBind(p0: Intent?): IBinder? {
-        TODO("Not yet implemented")
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 
-
-    private fun startBackgroundTask(model: CoinModel?) {
-        handler.postDelayed(object : Runnable {
+    fun addRunnable(id: String, model: CoinModel) {
+        val runnable = object : Runnable {
             override fun run() {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
-                        var notificationService = NotificationService(applicationContext)
-                        var responseModel = trackerRepository.getCoinDetail(model?.id!!)
-                        firebaseRepository.updateDataInFirestore(HawkUtils.getLastUser(),model?.id,responseModel!!)
-                        if (responseModel?.market_data?.current_price != model?.market_data?.current_price) {
-                            if ((responseModel?.market_data?.current_price?.usd
-                                    ?: 0).toDouble() > (model?.market_data?.current_price?.usd
+                        val notificationService = NotificationService(applicationContext)
+                        val responseModel = trackerRepository.getCoinDetail(model.id!!)
+                        firebaseRepository.updateDataInFirestore(
+                            HawkUtils.getLastUser(),
+                            model.id,
+                            responseModel?.copy(isLikedByUser = true,reloadPerHour = model.reloadPerHour)!!
+                        )
+
+                        if (responseModel.market_data?.current_price != model.market_data?.current_price) {
+                            if ((responseModel.market_data?.current_price?.usd
+                                    ?: 0).toDouble() > (model.market_data?.current_price?.usd
                                     ?: 0).toDouble()
                             )
-                                notificationService.showNotification(model=responseModel,isUp = true)
+                                notificationService.showNotification(
+                                    model = responseModel,
+                                    isUp = true
+                                )
                             else
-                                notificationService.showNotification(model=responseModel,isUp = false)
-
+                                notificationService.showNotification(
+                                    model = responseModel,
+                                    isUp = false
+                                )
                         }
-
-
                     } catch (e: Exception) {
-                        Log.e(TAG, "API call failed :startBackgroundTask ${e.message}")
+                        Log.e(TAG, "API call failed: addRunnable ${e.message}")
                     }
                 }
-//call after x hour
-                handler.postDelayed(this, (model?.reloadPerHour?.toLong()?.times(3600000) ?: 3600000) )
+                handler.postDelayed(
+                    this,
+                    (model.reloadPerHour?.toLong()?.times(3600000) ?: 3600000)
+                )
             }
+        }
 
-        }, 0)
+        handler.postDelayed(runnable, 0)
+        runnableMap[id] = runnable
     }
 
+    fun cancelRunnable(id: String) {
+        runnableMap[id]?.let {
+            handler.removeCallbacks(it)
+            runnableMap.remove(id)
+        }
+    }
+
+    private fun startBackgroundTask(model: CoinModel?) {
+        model?.id?.let { addRunnable(it, model) }
+    }
+
+    private fun createNotification(): Notification {
+        createNotificationChannel()
+
+        val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            .setContentTitle("Coiin Tracker")
+            .setContentText("Service working...")
+            .setSmallIcon(R.drawable.ic_logo)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+
+        return notificationBuilder.build()
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 }
+
