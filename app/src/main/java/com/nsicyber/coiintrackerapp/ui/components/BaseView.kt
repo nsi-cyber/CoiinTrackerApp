@@ -92,48 +92,17 @@ fun BaseView(
         }
     }
 
-    if(viewModel?.previewDialogState?.value == true){
-        val configuration = LocalConfiguration.current
-        PreviewDialog(onDismissRequest = {viewModel.onDismissRequest()}, modifier = Modifier.background(
-            Color.Black), content = {
-            var context = LocalContext.current
-            if(viewModel.previewDialogType.value?.contains("image") == true)
-                AsyncImage(modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(0.dp, (configuration.screenHeightDp * 0.9).dp), model = viewModel.previewDialogUri.value, onError = {
-                    viewModel.previewDialogState.value = false
-                }, contentDescription = "", contentScale = ContentScale.Fit)
 
-            else if(viewModel.previewDialogType.value?.contains("pdf") == true ||
-                viewModel.previewDialogType.value?.contains("officedocument") == true ||
-                viewModel.previewDialogType.value?.contains("msword") == true){
-                if(viewModel.previewDialogUri.value != null){
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .heightIn(0.dp, (configuration.screenHeightDp * 0.9).dp)) {
-
-
-          }
-                }
-
-            }
-        })
-    }
 
     CoiinTrackerAppTheme {
-        //navHostController = rememberNavController() //TODO
-        val density = LocalDensity.current
-        val configuration = LocalConfiguration.current
+
         val bottomSheetModalState =
             rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-        val scope = rememberCoroutineScope()
+
         BackPressHandler(enabled = canGoBack, onBackPressed = {
             if (canGoBack) navHostController!!.popBackStack()
         })
-        /*scope.launch {
-            //if (bottomSheetState) bottomSheetModalState.(ModalBottomSheetValue.HalfExpanded)
-        }*/
+
         if (!bottomSheetModalState.isVisible) {
             onBottomSheetDispose()
         }

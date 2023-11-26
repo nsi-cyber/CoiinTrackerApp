@@ -29,12 +29,12 @@ class NotificationService(
 
         val notification = NotificationCompat.Builder(context, TRACKER_CHANNEL)
             .setSmallIcon(R.drawable.ic_logo)
-            .setContentTitle("Fiyat Değişti")
+            .setContentTitle("Change in Price")
             .setContentText(
                 if (isUp == true)
-                    "${model?.name} Coininizin fiyatı yükseldi! "
+                    "${model?.name} 's price has increased! "
                 else
-                    "${model?.name} Coininizin fiyatı düştü! "
+                    "${model?.name} 's price has decreased! "
 
 
             )

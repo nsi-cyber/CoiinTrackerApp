@@ -555,7 +555,7 @@ fun TrackCoinBottomSheet(state: ModalBottomSheetState, viewModel: DetailViewMode
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Contiune without Notify",
+                    text = "Continue without Notify",
 
                     // Body/Large/bold
                     style = TextStyle(

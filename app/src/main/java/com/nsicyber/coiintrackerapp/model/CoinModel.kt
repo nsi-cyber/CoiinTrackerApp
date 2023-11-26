@@ -12,8 +12,6 @@ data class CoinModel(
 
     var image: Image? = null,
 
-    var categories: List<String>? = null,
-
     var id: String? = null,
 
     var last_updated: String? = null,
@@ -38,7 +36,6 @@ fun CoinModel?.toMap(): Map<String, Any?> {
         "hashing_algorithm" to this?.hashing_algorithm,
         "description" to this?.description,
         "image" to this?.image,
-        "categories" to this?.categories,
         "id" to this?.id,
         "last_updated" to this?.last_updated,
         "market_data" to this?.market_data,

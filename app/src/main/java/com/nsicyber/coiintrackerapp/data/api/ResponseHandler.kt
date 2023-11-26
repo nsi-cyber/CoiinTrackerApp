@@ -30,15 +30,13 @@ class NetworkResponseAdapter<S : Any>(
 
 internal class NetworkResponseCall<S : Any>(
     private val delegate: Call<S>,
-    //private val errorConverter: Converter<ResponseBody, E>
 ) : Call<S> {
 
     override fun enqueue(callback: Callback<S>) {
         return delegate.enqueue(object : Callback<S> {
             override fun onResponse(call: Call<S>, response: Response<S>) {
                 val body = response.body()
-                val code = response.code()
-                val error = response.errorBody()
+
 
                 if (response.isSuccessful) {
                     if (body != null) {

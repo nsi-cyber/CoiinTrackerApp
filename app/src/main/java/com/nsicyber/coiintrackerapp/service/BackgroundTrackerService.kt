@@ -63,7 +63,7 @@ class BackgroundTrackerService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "Servis oluşturuldu.")
+        Log.d(TAG, "Tracker service created.")
 
 
         val notification = createNotification()
@@ -116,7 +116,7 @@ class BackgroundTrackerService : Service() {
 
 
                     } catch (e: Exception) {
-                        Log.e(TAG, "API isteği başarısız oldu:startBackgroundTask ${e.message}")
+                        Log.e(TAG, "API call failed :startBackgroundTask ${e.message}")
                     }
                 }
 //call after x hour

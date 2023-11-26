@@ -36,8 +36,8 @@ fun ApiResultDialog(dialogType : DialogType = DialogType.SUCCESS, body : String?
         onDialogNegativeButtonClicked = {
             onResult(false)
         },
-        positiveButtonText = "Tamam",
-        negativeButtonText = if(isNegativeButtonEnabled) "İptal" else "",
+        positiveButtonText = "Okay",
+        negativeButtonText = if(isNegativeButtonEnabled) "Cancel" else "",
         onDialogPositiveButtonClicked = {
             onResult(true)
         }

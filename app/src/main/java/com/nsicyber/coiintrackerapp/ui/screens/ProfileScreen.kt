@@ -109,7 +109,7 @@ fun ProfileScreen()
 
                     item{
                         Text(
-                            text = "My Favorited Coin",
+                            text = "My Favorite Coins",
 
                             // Heading / H2 / ExtraBold
                             style = TextStyle(
