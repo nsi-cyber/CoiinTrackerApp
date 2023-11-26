@@ -23,19 +23,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.nsicyber.coiintrackerapp.R
 import com.nsicyber.coiintrackerapp.ui.components.BaseView
 import com.nsicyber.coiintrackerapp.ui.components.InputTextField
 import com.nsicyber.coiintrackerapp.ui.components.PasswordInputTextField
 import com.nsicyber.coiintrackerapp.ui.components.navHostController
 import com.nsicyber.coiintrackerapp.ui.components.signup
+import com.nsicyber.coiintrackerapp.viewmodel.LoginViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen() {
+    val viewModel = hiltViewModel<LoginViewModel>();
 
-
-    BaseView( useIsBusy = false, isVerticalPaddingEnabled = false) {
+    BaseView(viewModel = viewModel, useIsBusy = false, isVerticalPaddingEnabled = false) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -50,7 +52,7 @@ fun LoginScreen() {
 
 
 //Texts
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp),modifier= Modifier.fillMaxWidth()) {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp),modifier=Modifier.fillMaxWidth()) {
 
                 Text(
                     text = "Login",
@@ -80,19 +82,18 @@ fun LoginScreen() {
 //Input
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 InputTextField(placeholder = "Enter your e-Mail",
-                    value = ""//todo
-                    ,
+                    value = viewModel.mail.value,
                     onValueChange = {
-                   //todo
+                        viewModel.mail.value = it
                     })
 
 
                 PasswordInputTextField(placeholder = "Enter your Password",
-                    value = ""//todo
-                    ,
                     onValueChange = {
-                        //todo
-                    })
+                        viewModel.password.value = it
+                    },
+                    value = viewModel.password.value,
+                )
             }
 
 
@@ -103,7 +104,8 @@ fun LoginScreen() {
                 Row(
                     Modifier
                         .clickable {
-                           //TODO API CALL LOGIN
+                            viewModel.loginApiCall();
+
                         }
                         .fillMaxWidth()
                         .background(
@@ -171,8 +173,5 @@ fun LoginScreen() {
 
         }
     }
-
-
-
-
 }
+
