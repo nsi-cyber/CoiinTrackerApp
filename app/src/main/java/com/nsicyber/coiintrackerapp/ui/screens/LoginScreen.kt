@@ -37,7 +37,7 @@ import com.nsicyber.coiintrackerapp.viewmodel.LoginViewModel
 fun LoginScreen() {
     val viewModel = hiltViewModel<LoginViewModel>();
 
-    BaseView(viewModel = viewModel, useIsBusy = false, isVerticalPaddingEnabled = false) {
+    BaseView(canGoBack = false,viewModel = viewModel, useIsBusy = false, isVerticalPaddingEnabled = false) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)

@@ -12,6 +12,7 @@ import com.nsicyber.coiintrackerapp.ui.screens.HomeScreen
 import com.nsicyber.coiintrackerapp.ui.screens.LoginScreen
 import com.nsicyber.coiintrackerapp.ui.screens.ProfileScreen
 import com.nsicyber.coiintrackerapp.ui.screens.SignUpScreen
+import com.nsicyber.coiintrackerapp.ui.screens.SplashScreen
 
 
 var navHostController: NavHostController? = null
@@ -21,12 +22,18 @@ var signup = "signUp"
 var home = "home"
 var detail = "detail"
 var profile = "profile"
+var splash = "splash"
 
 
 @Composable
-fun NavigationController(result: String?=null) {
+fun NavigationController() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination =result ?: login) {
+    NavHost(navController = navController, startDestination = splash) {
+
+        composable(splash) {
+            SplashScreen()
+        }
+
         composable(login) {
             LoginScreen()
         }

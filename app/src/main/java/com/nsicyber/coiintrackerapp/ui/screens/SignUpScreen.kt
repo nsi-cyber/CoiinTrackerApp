@@ -37,7 +37,7 @@ fun SignUpScreen() {
 
 
 
-    BaseView(viewModel = viewModel, useIsBusy = true, isVerticalPaddingEnabled = false) {
+    BaseView(canGoBack = true, viewModel = viewModel, useIsBusy = true, isVerticalPaddingEnabled = false) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
