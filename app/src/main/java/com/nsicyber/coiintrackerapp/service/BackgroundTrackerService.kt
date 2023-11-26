@@ -119,9 +119,8 @@ class BackgroundTrackerService : Service() {
                         Log.e(TAG, "API isteği başarısız oldu:startBackgroundTask ${e.message}")
                     }
                 }
-
-              //  handler.postDelayed(this, (model?.reloadPerHour?.toLong()?.times(360000) ?: 600000) )
-                handler.postDelayed(this, 10000 )
+//call after x hour
+                handler.postDelayed(this, (model?.reloadPerHour?.toLong()?.times(3600000) ?: 3600000) )
             }
 
         }, 0)
