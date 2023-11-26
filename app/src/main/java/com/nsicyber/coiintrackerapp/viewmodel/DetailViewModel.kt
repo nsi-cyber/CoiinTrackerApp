@@ -15,10 +15,13 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val trackerRepository: TrackerRepository,
+    private val userRepository: UserRepository,
     private val application: Application
 ) : BaseViewModel() {
 
     var coinDetail by mutableStateOf<CoinModel?>(null)
+    var bottomSheetState by mutableStateOf<Boolean>(false)
+    var isUserFavorited by mutableStateOf<Boolean>(false)
 
 
     fun getCoinDetail(id: String?) {
@@ -28,7 +31,42 @@ class DetailViewModel @Inject constructor(
 
     }
 
+    fun addToFavorite(model: CoinModel?) {
+        apiCall(isBusyEnabled = true) {
+            userRepository.userAddData(model)?.let {
+                if (it == true)
+                    setSuccessDialogState(true, "Coin Added to Favorites") {
 
+                        navHostController!!.popBackStack()
+                    }
+            }
+        }
+    }
+
+    fun isUserFavorited() {
+        apiCall {
+
+            if (!userRepository.getUserLikes()?.filter { model ->
+                    model?.id == coinDetail?.id
+                }.isNullOrEmpty()
+            )
+                isUserFavorited = true
+        }
+    }
+
+
+    fun removeFromFavorite() {
+        apiCall {
+            userRepository.userRemoveData(coinDetail?.id)?.let {
+                if (it == true)
+                    setSuccessDialogState(true, "Coin Removed from Favorites") {
+                        navHostController!!.popBackStack()
+                    }
+            }
+        }
+
+
+    }
 
 
 
