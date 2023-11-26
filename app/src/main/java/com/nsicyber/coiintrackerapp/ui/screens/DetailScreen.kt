@@ -116,9 +116,9 @@ fun DetailScreen(id: String?) {
                                     .width(24.dp)
                                     .height(24.dp),
                                 painter = if (viewModel.isUserFavorited)
-                                    painterResource(id = com.nsicyber.coiintrackerapp.R.drawable.ic_star_filler)
+                                    painterResource(id = R.drawable.ic_star_filler)
                                 else
-                                    painterResource(id = com.nsicyber.coiintrackerapp.R.drawable.ic_star),
+                                    painterResource(id = R.drawable.ic_star),
                                 contentDescription = "image description",
                                 contentScale = ContentScale.Fit,
                                 colorFilter = ColorFilter.tint(Color.Black),
@@ -145,7 +145,6 @@ fun DetailScreen(id: String?) {
                 Text(
                     text = viewModel.coinDetail?.name ?: "",
 
-                    // Body/Large/bold
                     style = TextStyle(
                         fontSize = 24.sp,
                         lineHeight = 26.8.sp,
@@ -157,7 +156,6 @@ fun DetailScreen(id: String?) {
                 Text(
                     text = viewModel.coinDetail?.symbol ?: "",
 
-                    // Body / Medium / medium
                     style = TextStyle(
                         fontSize = 18.sp,
                         lineHeight = 23.6.sp,
@@ -578,3 +576,4 @@ fun TrackCoinBottomSheet(state: ModalBottomSheetState, viewModel: DetailViewMode
 
 
 }
+

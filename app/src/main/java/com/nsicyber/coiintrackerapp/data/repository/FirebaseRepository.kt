@@ -23,7 +23,6 @@ class FirebaseRepository @Inject constructor() {
 
     private var auth by mutableStateOf<FirebaseAuth?>(null)
     private var db by mutableStateOf<FirebaseFirestore?>(null)
-
     private var user by mutableStateOf<FirebaseUser?>(null)
 
     init {
