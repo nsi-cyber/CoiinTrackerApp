@@ -9,8 +9,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.nsicyber.coiintrackerapp.model.response.CoinModel
-import com.nsicyber.coiintrackerapp.model.response.toMap
+import com.nsicyber.coiintrackerapp.model.CoinModel
+import com.nsicyber.coiintrackerapp.model.toMap
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import javax.inject.Singleton
