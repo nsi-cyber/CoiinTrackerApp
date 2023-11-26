@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.nsicyber.coiintrackerapp.R
-import com.nsicyber.coiintrackerapp.model.response.CoinModel
+import com.nsicyber.coiintrackerapp.model.CoinModel
 import com.nsicyber.coiintrackerapp.ui.components.BaseView
 import com.nsicyber.coiintrackerapp.ui.components.CustomAppBar
 import com.nsicyber.coiintrackerapp.ui.components.CustomCard

@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.nsicyber.coiintrackerapp.data.repository.TrackerRepository
 import com.nsicyber.coiintrackerapp.data.repository.UserRepository
-import com.nsicyber.coiintrackerapp.model.response.CoinModel
+import com.nsicyber.coiintrackerapp.model.CoinModel
 import com.nsicyber.coiintrackerapp.ui.components.navHostController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

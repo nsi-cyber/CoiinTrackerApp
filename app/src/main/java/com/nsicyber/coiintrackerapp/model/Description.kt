@@ -1,4 +1,4 @@
-package com.nsicyber.coiintrackerapp.model.response
+package com.nsicyber.coiintrackerapp.model
 
 data class Description(
 

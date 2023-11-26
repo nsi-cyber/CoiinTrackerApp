@@ -1,7 +1,7 @@
 package com.nsicyber.coiintrackerapp.data.repository
 
 import com.google.firebase.auth.FirebaseUser
-import com.nsicyber.coiintrackerapp.model.response.CoinModel
+import com.nsicyber.coiintrackerapp.model.CoinModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
